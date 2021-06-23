@@ -2,22 +2,26 @@
 {% block content%}
 
 {% load static %}
-
+<title>Lab Register</title>
 <h2 class="card-title" style="text-align: center;margin-top: 10px;margin-bottom: 10px;">Lab Registration</h2>
     <div style="margin-left: 18%; margin-right: 18%;margin-top: 2%;">
-        <form id="lab_register" class="row g-3" class="needs-validation" method="POST" action="{% url 'Lab_Register' %}">
+        <form id="lab_register" class="row g-3 needs-validation" method="POST" action="{% url 'Lab_Register' %}">
             {% csrf_token %}
             <div class="col-md-12">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" required class="form-control" name="email" id="email">
+              <label for="Hospital_Name" class="form-label">Hospital Name</label>
+              <input type="text" required class="form-control" name="Hospital_Name" placeholder="Hospital Name" id="Hospital_Name">
             </div>
-            <div class="col-md-6">
-              <label for="password1" class="form-label">Password</label>
-              <input type="password" required class="form-control" name="password1" id="password1">
-            </div> 
-            <div class="col-md-6">
-              <label for="password2" class="form-label">Re-type Password</label>
-              <input type="password" required class="form-control" name="password2" id="password2">
+            <div class="col-md-12">
+              <label for="regNo" class="form-label">Hospital Registration No</label>
+              <input type="text" required class="form-control" name="regNo" placeholder="Hospital Registration No" id="regNo">
+            </div>
+            <div class="col-md-12">
+              <label for="email" class="form-label">Email</label>
+              <input type="email" required class="form-control" placeholder="Email" name="email" id="email">
+            </div>
+            <div class="col-md-12">
+              <label for="phoneNo" class="form-label">Phone No</label>
+              <input type="text" required class="form-control" placeholder="Phone No" name="phoneNo" id="phoneNo">
             </div>
             <div class="col-12">
               <label for="address" class="form-label">Address</label>
@@ -45,14 +49,6 @@
               <div class="col-md-6">
                 <label for="close_time" class="form-label">Close Time</label>
                 <input type="time" required class="form-control" name="close_time" id="close_time">
-              </div>
-
-            <div class="col-md-4">
-                <label for="test_name" class="form-label">Test</label>
-                <select id="test_name" required name="test_name" class="form-control">
-                  <option selected>Choose...</option>
-                  <option value="Eye Test">Eye Test</option>
-                </select>
               </div>
 
             <div class="col-md-2">
@@ -126,7 +122,7 @@
               else
               {
                 $("#alert-msg").addClass("alert alert-danger show");
-                $("#msg").html(data.messages.username); 
+                $("#msg").html(data.messages); 
               }
               
             }
@@ -135,7 +131,8 @@
     </script>
     <script>
       $("#alert-msg .close").on("click",function(){
-          $("#alert-msg").removeClass("alert alert-success alert-danger show");
+        $("#alert-msg").removeClass("alert alert-success alert-danger show");
+        $("#msg").html("");
       });
   </script>
 {% endblock %}
