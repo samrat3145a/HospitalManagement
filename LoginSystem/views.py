@@ -28,6 +28,14 @@ def logout(request):
     if request.method == 'POST':
         auth.logout(request)
         return redirect('Lab_Login')
+        
+def book_slot(request):
+    hospital_list = HospitalData.objects.all()
+    return render(request,'book_slot.html', {'hospital_list': hospital_list})
+    
+def hospital_search(request):
+    hospital_list = HospitalData.objects.all()
+    return render(request,'hospital_search.html', {'hospital_list': hospital_list})
 
 
 def Lab_Login(request):

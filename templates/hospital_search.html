@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block content%}
+
+{% load static %}
+
+<style>
+    #search-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    #search-table tr:hover {
+        background-color: #ddd;
+    }
+
+    #search-table th {
+        background-color: #04AA6D;
+        color: white;
+    }
+</style>
+
+<div class="container">
+    <div class="col-6">
+        <h1><Strong>Search Hospital</Strong></h1><br>
+    </div>
+    <div class="mb-5">
+        <form class="form-inline my-2 my-lg-0">
+            <div class="ui grid col-12">
+                <div class="six wide column col-12">
+                    <div class="ui search">
+                        <div class="ui icon input col-6">
+                            <input id="search-bar" type="text" autoComplete="off" value=""
+                                placeholder="Search Hospital Name or Pincode" tabindex="0" class="prompt" />
+                            <i aria-hidden="true" class="search icon" style="right: 5%;"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div style="height:100px">
+            <table id="search-table" class="ui celled padded table my-4">
+                <thead class="">
+                    <tr class="">
+                        <th class="single line">Name</th>
+                        <th class="">Open Time</th>
+                        <th class="">Close Time</th>
+                        <th class="">Pincode</th>
+                        <th class="">Email</th>
+                        <th class="">Address</th>
+                        <th class="">Phone No</th>
+                    </tr>
+                </thead>
+                <tbody class="">
+                    {% for m in hospital_list %}
+                    <tr class="">
+                        <td class="">
+                            <h4 class="single line center aligned header">{{m.Hospital_Name}}</h4>
+                        </td>
+                        <td class="single line">{{m.open_time}}</td>
+                        <td class="single line">{{m.close_time}}</td>
+                        <td class="single line">{{m.pincode}}</td>
+                        <td class="">{{m.email}}</td>
+                        <td class="">{{m.address}}</td>
+                        <td class="single line">{{m.phoneNo}}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    $('#search-bar').keyup(function (e) {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("search-bar");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("search-table");
+        tr = table.getElementsByTagName("tr");
+
+        for (i = 0; i < tr.length; i++) {
+            let name = tr[i].getElementsByTagName("td")[0];
+            let pincode = tr[i].getElementsByTagName("td")[3];
+            if (name || pincode) {
+                txtValue1 = name.textContent || name.innerText;
+                txtValue2 = pincode.textContent || pincode.innerText;
+                if (txtValue1.toUpperCase().indexOf(filter) > -1 || txtValue2.toUpperCase().indexOf(filter) > -
+                    1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
+    });
+</script>
+{% endblock %}<script>

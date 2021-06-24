@@ -1,96 +1,103 @@
 {% extends 'base.html' %}
 {% block content%}
 <style>
-    .container {
-        font-family: 'Baloo Bhai 2', cursive;
-        font-size: 1.2rem;
-    }
+  .container {
+    font-family: 'Baloo Bhai 2', cursive;
+    font-size: 1.2rem;
+  }
 </style>
-
-<head>
-  <title>User Register</title>
-</head>
+<title>User Register</title>
 <div class="container">
-    <div class="col-6">
-        <h1><Strong>SIGN UP</Strong></h1><br>
-        <form action="" class="row g-3" method="POST">
-            {% csrf_token %}
+  <div class="col-6">
+    <h1><Strong>User Registeration</Strong></h1><br>
+    <form action="{% url 'User_Register' %}" class="row g-3" method="POST">
+      {% csrf_token %}
 
-            {% if form.errors %}
-            <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <div>Your form has Error!</div>
-                {% for field in form %}
-                {% if field.errors %}
-                {{ field.errors }}
-                {% endif %}
-                {% endfor %}
-            </div>
+      {% if form.errors %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div>Your form has Error!</div>
+        {% for field in form %}
+        {% if field.errors %}
+        {{ field.errors }}
+        {% endif %}
+        {% endfor %}
+      </div>
 
-            {% endif %}
+      {% endif %}
 
-            {{ form }}
+      {{ form }}
 
-            <p>
+      <p>
 
-            </p>
-            <div class="col-md-6"> 
-              <label for="name">NAME</label>
-              <input type="text" name="name" class="form-control" placeholder="Name" required id="name">
-            </div>
+      </p>
+      <div class="col-md-6">
+        <label for="name">Name</label>
+        <input type="text" name="name" class="form-control" placeholder="Name" required id="name">
+      </div>
 
-            <div class="col-md-6"> 
-              <label for="email">EMAIL ID</label>
-              <input type="text" name="email" class="form-control" placeholder="Email Address" required id="email">
-            </div>
-            <div class="col-md-6"> 
-              <label for="contact">CONTACT NO</label>
-              <input type="number" name="phoneNo" class="form-control" placeholder="Contact No" required id="contact" maxlength="10">
-            </div>
-            
-            <div class="col-md-6"> 
-              <label for="age">Age</label>
-              <input type="number" name="age" class="form-control" placeholder="Age" required id="age">
-            </div>  
-            
-            <div class="col-md-6"> 
-              <label for="blood_group">Blood Group</label>
-              <input type="text" name="blood_group" class="form-control" placeholder="Blood Group" required id="blood_group">
-            </div>
-            
-            <div class="col-md-6"> 
-              <label for="gender">Gender</label>
-              <input type="text" name="gender" class="form-control" placeholder="Gender" required id="gender">
-            </div>
+      <div class="col-md-6">
+        <label for="email">Email</label>
+        <input type="text" name="email" class="form-control" placeholder="Email Address" required id="email">
+      </div>
+      <div class="col-md-6">
+        <label for="contact">Phone No</label>
+        <input type="number" name="phoneNo" class="form-control" placeholder="Contact No" required id="contact"
+          maxlength="10">
+      </div>
 
-            <div class="col-md-6"> 
-              <label for="id_proof_name">ID PROOF NAME</label>
-              <input type="text" name="id_proof_name" class="form-control" placeholder="ID Proof Name" required
-                    id="id_proof_name">   
-            </div>
-            <div class="col-md-6">
-              <label for="Id_proof_no">IDENTITY NO</label>
-              <input type="number" name="id_proof_no" class="form-control" placeholder="ID Proof No" required id="Id_proof_no">
-            </div>
+      <div class="col-md-6">
+        <label for="age">Age</label>
+        <input type="number" name="age" class="form-control" placeholder="Age" required id="age">
+      </div>
 
-            <div class="col-md-12 mb-4">
-              <label for="Address">ADDRESS</label>
-              <input type="text" name="Address" class="form-control" placeholder="Address" required id="Address">
-            </div>
+      <div class="col-md-6">
+        <label for="blood_group">Blood Group</label>
+        <input type="text" name="blood_group" class="form-control" placeholder="Blood Group" required id="blood_group">
+      </div>
 
-            <p class="form-row mt-5">
-                <div class="form-group col-md-2">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-                <div class="form-group col-md-2">
-                    <button type="reset" class="btn btn-danger">Reset</button>
-                </div>
+      <div class="col-md-6">
+        <label for="gender">Gender</label>
+        <select class="form-control" name="gender" id="gender">
+          <option value="">Select Gender</option>
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
 
-            </p>
-        </form>
-    </div>
-</div>
+      <div class="col-md-6">
+        <label for="id_proof_name">ID Proof Name</label>
+        <select class="form-control" name="id_proof_name" id="id_proof_name">
+          <option value="">Select ID Proof Type</option>
+          <option value="Aadhar Card">Aadhar Card</option>
+          <option value="Pan Card">Pan Card</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="col-md-6">
+        <label for="Id_proof_no">Identity No</label>
+        <input type="number" name="id_proof_no" class="form-control" placeholder="ID Proof No" required
+          id="Id_proof_no">
+      </div>
+
+      <div class="col-md-12 mb-4">
+        <label for="Address">Address</label>
+        <input type="text" name="Address" class="form-control" placeholder="Address" required id="Address">
+      </div>
+
+      <p class="form-row mt-5">
+        <div class="form-group col-md-2">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+        <div class="form-group col-md-2">
+          <button type="reset" class="btn btn-danger">Reset</button>
+        </div>
+
+      </p>
+    </form>
+  </div>
 </div>
 {% endblock %}
