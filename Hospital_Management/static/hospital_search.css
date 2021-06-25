@@ -1,0 +1,12 @@
+#search-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+#search-table tr:hover {
+    background-color: #ddd;
+}
+
+#search-table th {
+    background-color: #04AA6D;
+    color: white;
+}

@@ -4,134 +4,173 @@
 {% load static %}
 <title>Lab Register</title>
 <h2 class="card-title" style="text-align: center;margin-top: 10px;margin-bottom: 10px;">Lab Registration</h2>
-    <div style="margin-left: 18%; margin-right: 18%;margin-top: 2%;">
-        <form id="lab_register" class="row g-3 needs-validation" method="POST" action="{% url 'Lab_Register' %}">
-            {% csrf_token %}
-            <div class="col-md-12">
-              <label for="Hospital_Name" class="form-label">Hospital Name</label>
-              <input type="text" required class="form-control" name="Hospital_Name" placeholder="Hospital Name" id="Hospital_Name">
-            </div>
-            <div class="col-md-12">
-              <label for="regNo" class="form-label">Hospital Registration No</label>
-              <input type="text" required class="form-control" name="regNo" placeholder="Hospital Registration No" id="regNo">
-            </div>
-            <div class="col-md-12">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" required class="form-control" placeholder="Email" name="email" id="email">
-            </div>
-            <div class="col-md-12">
-              <label for="phoneNo" class="form-label">Phone No</label>
-              <input type="text" required class="form-control" placeholder="Phone No" name="phoneNo" id="phoneNo">
-            </div>
-            <div class="col-12">
-              <label for="address" class="form-label">Address</label>
-              <input type="text" required class="form-control" name="address" id="address" placeholder="1234 Main St">
-            </div>
-            <div class="col-12">
-              <label for="address1" class="form-label">Address 2</label>
-              <input type="text" required class="form-control" id="address1" name="address1" placeholder="Apartment, studio, or floor">
-            </div>
-            <div class="col-md-6">
-              <label for="city" class="form-label">City</label>
-              <input type="text" required class="form-control" name="city" id="city" placeholder="Enter your city">
-            </div>
-            <div class="col-md-4">
-                <label for="state" class="form-label">State</label>
-                <select id="state" required name="state" class="form-control">
-                  <option selected>Choose...</option>
-                  <option value="West Bengal">West Bengal</option>
-                </select>
-              </div>
-            <div class="col-md-6">
-                <label for="open_time" class="form-label">Open Time</label>
-                <input type="time" required class="form-control" name="open_time" id="open_time">
-              </div>
-              <div class="col-md-6">
-                <label for="close_time" class="form-label">Close Time</label>
-                <input type="time" required class="form-control" name="close_time" id="close_time">
-              </div>
-
-            <div class="col-md-2">
-              <label for="pincode" class="form-label">Pincode</label>
-              <input type="text" class="form-control" name="pincode" required id="pincode" placeholder="704402">
-            </div>
-            <div class="col-12">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" id="gridCheck">
-                <label class="form-check-label" for="gridCheck">
-                  Check me out
-                </label>
-              </div>
-            </div>
-            <div class="col-12 mt-4 mb-5" >
-              <button type="submit" id="register-btn" class="btn btn-primary" style="display: block;margin: auto;">Register</button>
-            </div>
-          </form>
+<div style="margin-left: 18%; margin-right: 18%;margin-top: 2%;">
+  <form id="lab_register" class="row g-3 needs-validation" method="POST" action="{% url 'Lab_Register' %}">
+    {% csrf_token %}
+    <div class="col-md-12">
+      <label for="Hospital_Name" class="form-label">Hospital Name</label>
+      <input type="text" required class="form-control" name="Hospital_Name" placeholder="Hospital Name"
+        id="Hospital_Name">
+    </div>
+    <div class="col-md-12">
+      <label for="regNo" class="form-label">Hospital Registration No</label>
+      <input type="text" required class="form-control" name="regNo" placeholder="Hospital Registration No" id="regNo">
+    </div>
+    <div class="col-md-12">
+      <label for="email" class="form-label">Email</label>
+      <input type="email" required class="form-control" placeholder="Email" name="email" id="email">
+    </div>
+    <div class="col-md-6">
+      <label for="password1" class="form-label">Password</label>
+      <input type="password" required class="form-control" placeholder="Password" name="password1" id="password1">
+    </div>
+    <div class="col-md-6">
+      <label for="password2" class="form-label">Re-type Password</label>
+      <input type="password" required class="form-control" placeholder="Re-type Password" name="password2"
+        id="password2">
     </div>
 
-    <script>
-    $('#register-btn').on("click", function (e) {
-        e.preventDefault();
-        if ($('#password1').val() != $('#password2').val()) {
-            alert("Password Didnt Matched");
-            // return;
-          }
-        var form = $("#lab_register");
-        var formData = form.serializeArray();
-        formData = JSON.stringify(formData);
-        console.log(formData);
-        $.ajax({
-            type: "POST",
-            url: "/Lab/Register/",
-            data: {
-                value: formData
+    <div class="col-12">
+      <label for="address" class="form-label">Address</label>
+      <input type="text" required class="form-control" name="address" id="address" placeholder="1234 Main St">
+    </div>
+    <div class="col-12">
+      <label for="address1" class="form-label">Address 2</label>
+      <input type="text" required class="form-control" id="address1" name="address1"
+        placeholder="Apartment, studio, or floor">
+    </div>
+    <div class="col-md-6">
+      <label for="phoneNo" class="form-label">Phone No</label>
+      <input type="text" required class="form-control" placeholder="Phone No" name="phoneNo" id="phoneNo">
+    </div>
+    <div class="col-md-6">
+      <label for="pincode" class="form-label">Pincode</label>
+      <input type="text" class="form-control" name="pincode" required id="pincode" placeholder="704402">
+    </div>
+    <div class="col-md-6">
+      <label for="city" class="form-label">City</label>
+      <input type="text" required class="form-control" name="city" id="city" placeholder="Enter your city">
+    </div>
+    <div class="col-md-6">
+      <label for="state" class="form-label">State</label>
+      <select id="state" required name="state" class="form-control">
+        <option selected>Choose...</option>
+        <option value="West Bengal">West Bengal</option>
+      </select>
+    </div>
+    <div class="col-md-6">
+      <label for="open_time" class="form-label">Open Time</label>
+      <input type="time" required class="form-control" name="open_time" id="open_time">
+    </div>
+    <div class="col-md-6">
+      <label for="close_time" class="form-label">Close Time</label>
+      <input type="time" required class="form-control" name="close_time" id="close_time">
+    </div>
+
+
+    <div class="row mt-4 mb-5" style="margin: 20rem;">
+      <div class="col-md-6">
+        <button type="submit" id="register-btn" class="btn btn-primary">Register</button>
+      </div>
+      <div class="col-md-6">
+        <button type="reset" class="btn btn-danger">Reset</button>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#lab_register').trigger("reset");
+  });
+  $('#register-btn').on("click", function (e) {
+    e.preventDefault();
+    if ($('#password1').val() != $('#password2').val()) {
+      alert("Password did not matched ! Please try again !");
+      return;
+    }
+    if (!validate()) {
+      return;
+    }
+    var form = $("#lab_register");
+    var formData = form.serializeArray();
+    formData = JSON.stringify(formData);
+    // console.log(formData);
+    $.ajax({
+      type: "POST",
+      url: "/Lab/Register/",
+      data: {
+        value: formData
+      },
+      dataType: "json",
+      success: function (data) {
+        if (data.success == "true") {
+          $('#lab_register').trigger("reset");
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          $("#alert-msg").addClass("alert alert-success show");
+          $("#msg").html(data.messages);
+        }
+        else {
+          $("#alert-msg").addClass("alert alert-danger show");
+          $("#msg").html(data.messages);
+        }
+
+      }
+    })
+  });
+</script>
+<script>
+  $("#alert-msg .close").on("click", function () {
+    $("#alert-msg").removeClass("alert alert-success alert-danger show");
+    $("#msg").html("");
+  });
+</script>
+<script>
+  (function () {
+    "use strict";
+    window.addEventListener(
+      "load",
+      function () {
+        var forms = document.getElementsByClassName("needs-validation");
+        var validation = Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener(
+            "submit",
+            function (event) {
+              if (form.checkValidity() === false) {
+                event.preventDefault();
+                event.stopPropagation();
+              }
+              form.classList.add("was-validated");
             },
-            dataType : "json",
-            success: function (data) {
-              if(data.success == "true")
-              {
-                $("#alert-msg").addClass("alert alert-success show");
-                $("#msg").html(data.messages); 
-              }
-              else
-              {
-                $("#alert-msg").addClass("alert alert-danger show");
-                $("#msg").html(data.messages); 
-              }
-              
-            }
-        })
-    });
-    </script>
-    <script>
-      $("#alert-msg .close").on("click",function(){
-        $("#alert-msg").removeClass("alert alert-success alert-danger show");
-        $("#msg").html("");
-      });
-  </script>
-  <script>
-    (function () {
-      "use strict";
-      window.addEventListener(
-        "load",
-        function () {
-          var forms = document.getElementsByClassName("needs-validation");
-          var validation = Array.prototype.filter.call(forms, function (form) {
-            form.addEventListener(
-              "submit",
-              function (event) {
-                if (form.checkValidity() === false) {
-                  event.preventDefault();
-                  event.stopPropagation();
-                }
-                form.classList.add("was-validated");
-              },
-              false
-            );
-          });
-        },
-        false
-      );
-    })();
-  </script>
+            false
+          );
+        });
+      },
+      false
+    );
+  })();
+</script>
+
+<script>
+  function validateEmail(email) {
+    const re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+  }
+
+  function validate() {
+    const email = $("#email").val();
+    // console.log(email);
+
+    if (validateEmail(email)) {
+      return true;
+    } else {
+      alert(email + " is not valid !!");
+      return false;
+    }
+
+  }
+
+  $("#register-btn").on("click", validate);
+</script>
 {% endblock %}

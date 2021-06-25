@@ -2,12 +2,14 @@
 {% block content%}
 
 {% load static %}
-<div class="Sections" style="padding-top: 2%;">
+
+<div class="Sections" style="padding-top: 6%;">
 	<div class="row row-cols-1 row-cols-md-3 g-4">
-		<div class="col" style="padding-left: 3%;padding-right: 3%;">
+		{% if not user.is_staff %}
+		<div class="col card-dash-body-1" >
 			<div class="card h-100">
 				<img src="https://ps.w.org/bookit/assets/icon-256x256.png?rev=2385587" class="card-img-top" alt="..."
-					style="width: 88%; height:auto; margin-left: 6%; margin-top: 2%;">
+					style="max-width: 88%; height:300px; margin-left: 6%; margin-top: 2%;">
 				<div class="card-body">
 					<h3 Slot class="card-title">Book Slot</h3>
 					<p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
@@ -17,11 +19,12 @@
 					Slot</a>
 			</div>
 		</div>
-		<div class="col" style="padding-left: 3%;padding-right: 3%;">
+		{% endif %}
+		<div class="col card-dash-body-1" >
 			<div class="card h-100">
 				<img
 					src="https://img.freepik.com/free-vector/map-point-location-logo_7280-2491.jpg?size=338&ext=jpg&ga=GA1.2.1381556648.1623456000"
-					class="card-img-top" alt="..." style="width: 88%; height:auto; margin-left: 6%; margin-top: 2%;">
+					class="card-img-top" alt="..." style="max-width: 88%; height:300px; margin-left: 6%; margin-top: 2%;">
 				<div class="card-body">
 					<h3 class="card-title">Searching</h3>
 					<p class="card-text">This card has supporting text below as a natural lead-in to additional content.</p>
@@ -29,18 +32,32 @@
 				<a href="{% url 'hospital_search' %}" class="btn btn-info" style="margin-left: 8%;margin-right: 8%; margin-bottom: 5%;">Searching</a>
 			</div>
 		</div>
-		<div class="col" style="padding-left: 3%; padding-right: 3%;">
+		<div class="col card-dash-body-1" >
 			<div class="card h-100">
 				<img src="https://www.logolynx.com/images/logolynx/e9/e9ecb36400427385b9a6e04c4bc54a23.png" class="card-img-top"
-					alt="..." style="width: 88%; height:auto; margin-left: 6%; margin-top: 2%;">
+					alt="..." style="max-width: 88%; height:300px; margin-left: 6%; margin-top: 2%;">
 				<div class="card-body">
 					<h3 class="card-title">Hot Module</h3>
 					<p class="card-text">This is a section you can get latest updates on the trending Medical News.Includes latest
 						upcoming and Live Medical Camps.</p>
 				</div>
-				<a href="#" class="btn btn-danger" style="margin-left: 8%;margin-right: 8%; margin-bottom: 5%;">Hot
+				<a href="{% url 'hot_module' %}" class="btn btn-danger" style="margin-left: 8%;margin-right: 8%; margin-bottom: 5%;">Hot
 					Module</a>
 			</div>
+		</div>
+		{% if user.is_staff %}
+		<div class="col card-dash-body-1" >
+			<div class="card h-100">
+				<img src="data:image/png;base64,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" class="card-img-top"
+					alt="..." style="max-width: 88%; height:300px; margin-left: 6%; margin-top: 2%;">
+				<div class="card-body">
+					<h3 class="card-title">Add Test</h3>
+					<p class="card-text">This is a section you can get latest updates on the trending Medical News.Includes latest
+						upcoming and Live Medical Camps.</p>
+				</div>
+				<a href="{% url 'add_test' %}" class="btn btn-success" style="margin-left: 8%;margin-right: 8%; margin-bottom: 5%;">Add Test</a>
+			</div>
+			{% endif %}
 		</div>
 	</div>
 </div>

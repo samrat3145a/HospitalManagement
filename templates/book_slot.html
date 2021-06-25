@@ -3,6 +3,9 @@
 
 {% load static %}
 
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
 <div class="container">
     <div class="col-6">
         <h1><Strong>Book Slot</Strong></h1><br>
@@ -16,21 +19,17 @@
                 </button>
                 <div>Your form has Error!</div>
                 {% for field in form %}
-                {% if field.errors %}
-                {{ field.errors }}
-                {% endif %}
+                    {% if field.errors %}
+                        {{ field.errors }}
+                    {% endif %}
                 {% endfor %}
             </div>
 
             {% endif %}
 
-
-            <p>
-
-            </p>
-            <div class="form-group col-md-6">
-                <p> <label for="employee_id">Hospital Name</label>
-                    <select id="employee_id" name="employee_id" class="form-control">
+            <div class="form-group col-md-12">
+                <p> <label for="hospital_id">Hospital Name</label>
+                    <select id="hospital_id" name="hospital_id" class="form-control">
                         <option>Choose Hospital..</option>
                         {% for m in hospital_list %}
                         <option value="{{ m.Hospital_ID }}">{{ m.Hospital_Name }}</option>
@@ -40,30 +39,99 @@
             </div>
 
             <div class="col-md-6">
-                <label for="booking_date">Booking Date</label>
-                <input type="date" name="booking_date" class="form-control" required id="booking_date">
+                <label for="slot_date">Slot Date</label>
+                <input type="date" name="slot_date" class="form-control" required id="slot_date">
             </div>
 
             <div class="col-md-6">
-                <label for="booking_time">Time</label>
-                <input type="time" name="booking_time" class="form-control" required id="booking_time">
+                <label for="slot_time">Slot Time</label>
+                <input type="time" name="slot_time" class="form-control" required id="slot_time">
+            </div> 
+            
+            <div class="col-md-6">
+                <input type="number" name="test_price" hidden class="form-control" required id="test_price">
+                <input type="text" name="test_name" hidden class="form-control" required id="test_name">
+                <input type="text" name="user_id" hidden class="form-control" required id="user_id" value="{{ user.id }}">
             </div>
             
-            <div class="col-md-6 mb-5">
-                <label for="test_name">Test Name</label>
-                <input type="text" name="test_name" class="form-control" placeholder="Test Name" required id="test_name">
+            <div class="form-group col-md-12 my-2 mb-4">
+                <p> <label for="test_name_select">Test Name</label>
+                    <select class="form-control js-example-basic-multiple col-12 mt-2" name="test_name_select" multiple="multiple"
+                        id="test_name_select">
+                    </select>
+                </p>
             </div>
 
-            <p class="form-row mt-5">
-                <div class="form-group col-md-2">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
-                <div class="form-group col-md-2">
-                    <button type="reset" class="btn btn-danger">Reset</button>
-                </div>
-
+            <p class="form-row">
+            <div class="form-group col-md-3">
+                <button class="ui vertical primary animated button" style="width: max-content;">
+                    <div id="total-price" class="hidden content">Rs 0.00</div>
+                    <div class="visible content">Book Slot</div>
+                </button>
+            </div>
+            <div class="form-group col-md-3">
+                <button type="reset" class="ui red button">Reset</button>
+            </div>
             </p>
         </form>
     </div>
 </div>
+
+<script>
+    $("#hospital_id").on("change", function () {
+        var data = $(this).val();
+        // console.log(data);
+        $.ajax({
+            type: "GET",
+            url: "/book_slot",
+            data: {
+                value: data
+            },
+            dataType: "json",
+            success: function (data) {
+                $('#test_name_select').empty();
+                var list = document.getElementById("test_name_select");
+                // console.log(list);
+                for (var i in data) {
+                    list.add(new Option(i + "  -  " + "Rs " + data[i] + ".00/-", data[i]));
+                }
+
+            }
+        })
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('.js-example-basic-multiple').select2({
+            placeholder: {
+                id: '',
+                text: 'Select an option',
+                tags: true,
+                tokenSeparators: [',', ' ']
+            }
+        });
+    });
+    $('#test_name_select').on('change', function (evt) {
+        if ($('#test_name_select').select2('val') != null) {
+            var selected_data = $('#test_name_select').select2('data');
+            var sum = 0;
+            var str = "";
+            for(var i in selected_data)
+            {
+                // console.log(i);
+                str += selected_data[i].text.substr(0,selected_data[i].text.indexOf("-")-2);
+                if(i<selected_data.length-1)
+                {
+                    str += ",";
+                }
+                sum += parseInt(selected_data[i].id);
+            }
+            $("#test_name").val(str);
+            $("#total-price").text("Rs "+ sum + ".00");
+            $("#test_price").val(sum);
+        }
+    });
+
+</script>
 {% endblock %}

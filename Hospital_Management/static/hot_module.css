@@ -1,0 +1,12 @@
+ul {
+    list-style-type: none;
+}
+li{
+    margin: 5px;
+}
+.list-group li a{
+    width:200px;
+}
+.list-group .btn {
+    font-weight: 500;
+}

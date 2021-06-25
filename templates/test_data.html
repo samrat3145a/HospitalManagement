@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block content%}
+
+
+<div class="container">
+    <div class="col-6">
+        <h1><Strong>Add Test</Strong></h1><br>
+        <form action="{% url 'add_test' %}" class="row g-3" method="POST">
+            {% csrf_token %}
+
+            {% if form.errors %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div>Your form has Error!</div>
+                {% for field in form %}
+                {% if field.errors %}
+                {{ field.errors }}
+                {% endif %}
+                {% endfor %}
+            </div>
+
+            {% endif %}
+
+            <div class="form-group col-md-6">
+                <p> <label for="hospital_id">Hospital Name</label>
+                    <input type="text" name="hospital_id" class="form-control" hidden readonly placeholder="Hospital Name" required id="hospital_id" value="{{ hospital_list.Hospital_ID}}">
+                    <input type="text" name="hospital_name" class="form-control" readonly placeholder="Hospital Name" required id="hospital_name" value="{{ hospital_list.Hospital_Name}}">
+                </p>
+            </div>
+
+            <div class="col-md-6">
+                <label for="test_name">Test Name</label>
+                <input type="text" name="test_name" class="form-control" placeholder="Test Name" required id="test_name">
+            </div>
+
+            <div class="col-md-12 mb-5">
+                <label for="test_price">Test Price</label>
+                <input type="number" name="test_price" class="form-control" placeholder="Test Price" required id="test_price">
+            </div>
+            
+
+            <p class="form-row mt-5">
+                <div class="form-group col-md-2">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+                <div class="form-group col-md-2">
+                    <button type="reset" class="btn btn-danger">Reset</button>
+                </div>
+
+            </p>
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

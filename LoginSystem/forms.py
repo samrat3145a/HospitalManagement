@@ -2,10 +2,23 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
 
+from LoginSystem.models import Test,BookSlot
+
+
+class AddTest(forms.ModelForm):
+    class Meta:
+        model = Test
+        fields = '__all__'
+        
+class BookSlotForm(forms.ModelForm):
+    class Meta:
+        model = BookSlot
+        fields = '__all__'
+
 class SignupForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username', 'password1', 'password2']
+        fields = ['username', 'password1', 'password2','is_staff']
 
     def __init__(self, *args, **krwargs):
         super(SignupForm, self).__init__(*args, **krwargs)
@@ -30,3 +43,6 @@ class SignupForm(UserCreationForm):
         self.fields['password2'].help_text = '<div class="form-text text-muted ml-5"><small>Enter the same password as ' \
                                             'before, ' \
                                             'for verification.</small></div> '
+
+        self.fields['is_staff'].widget.attrs['style'] = 'display:none;'
+        self.fields['is_staff'].label = ''

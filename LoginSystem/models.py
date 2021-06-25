@@ -33,8 +33,19 @@ class UserData(models.Model):
         
 class Test(models.Model): 
     hospital_id = models.ForeignKey(HospitalData, db_column='Hospital_ID', to_field='Hospital_ID', related_name='+',default=1, on_delete=models.SET_DEFAULT)
-    name = models.CharField(max_length=40)
-    price = models.BigIntegerField()
+    test_name = models.CharField(max_length=40)
+    test_price = models.BigIntegerField()
 
     class Meta:
         db_table = "Test"
+        
+class BookSlot(models.Model): 
+    hospital_id = models.ForeignKey(HospitalData, db_column='Hospital_ID', to_field='Hospital_ID', related_name='+',default=1, on_delete=models.SET_DEFAULT)
+    test_name = models.CharField(max_length=100)
+    slot_date = models.DateField()
+    slot_time = models.TimeField()
+    test_price = models.BigIntegerField()
+    user_id = models.IntegerField()
+
+    class Meta:
+        db_table = "Book Slot"

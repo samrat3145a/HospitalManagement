@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% block content%}
+
+<link rel="stylesheet" href="{% static 'hot_module.css' %}" />
+
+<div style="width: 80%; height: auto;text-align: center;">
+    <h2 class="my-3">Search By Category</h2>
+
+    <form action="" method="get" style="padding-left: 7%;padding-bottom: 1%;">
+        <div class="col-md-12">
+        <input type="text" placeholder="Search" class="form-control" aria-label="Search" name="category" style="width:40%;display:inline;"/>
+        <button type="submit" class="btn btn-warning">Search</button>
+    </div>
+    </form>
+
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            {% for i in articles %}
+            <div class="card text-white rounded shadow-lg bg-dark p-3 my-2" style="width: 55rem;">
+                <img src="{{ i.urlToImage }}" class="card-img-top" alt="...">
+                <h1> {{ i.source.name }} </h1>
+                <div class="card-body">
+                    <p>Author : {{i.author}} </p>
+                    <h4 class="card-title">{{ i.title }}</h4>
+                    <p class="card-text">Description : <i>{{ i.description }}</i></p>
+                    <a href="{{ i.url }}" class="btn btn-primary">View News</a>
+                    <br>
+                    <hr>
+                    <small>Published at : {{i.publishedAt}}</small>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="col-md-2" style="margin-left: 7rem;">
+            <h3 style="width:max-content">Trending Categories</h3>
+            <ul class="list-group my-4">
+                <li class="list-group-items" ><a class="btn btn-success"
+                        href="{% url 'hot_module' %}?category=covid19india.org">Covid19india</a></li>
+                <li class="list-group-items" ><a class="btn btn-danger"
+                        href="{% url 'hot_module' %}?category=covid-19">Covid-19</a></li>
+                <li class="list-group-items" ><a class="btn btn-primary"
+                        href="{% url 'hot_module' %}?category=covaxin">Covaxin</a></li>
+                <li class="list-group-items" ><a class="btn btn-dark"
+                        href="{% url 'hot_module' %}?category=healthcare">Health Care</a></li>
+                <li class="list-group-items" ><a class="btn btn-warning"
+                        href="{% url 'hot_module' %}?category=vaccination">Vaccination</a></li>
+                <li class="list-group-items" ><a class="btn btn-primary"
+                        href="{% url 'hot_module' %}?category=medical">Medical</a></li>
+                <li class="list-group-items" ><a class="btn btn-danger"
+                        href="{% url 'hot_module' %}?category=blood">Blood Donate</a></li>
+                <li class="list-group-items" ><a class="btn btn-primary"
+                        href="{% url 'hot_module' %}?category=camps">Medical Camps</a></li>
+                <li class="list-group-items" ><a class="btn btn-success"
+                        href="{% url 'hot_module' %}?category=sputnikv">Sputnik V</a></li>
+                <li class="list-group-items" ><a class="btn btn-secondary"
+                        href="{% url 'hot_module' %}?category=BSL-3">BSL-3</a></li>
+                <li class="list-group-items" ><a class="btn btn-warning"
+                        href="{% url 'hot_module' %}?category=BBV152"> BBV152</a></li>
+                <li class="list-group-items" ><a class="btn btn-warning"
+                        href="{% url 'hot_module' %}?category=covishield">Covishield</a></li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
