@@ -147,8 +147,8 @@ def Lab_Register(request):
         main_form = {"username":email,"password1":password1,"password2":password2,"password":password1,"is_staff":1}
         form = SignupForm(main_form)
         try: 
-            New_Data.save()
             if form.is_valid():
+                New_Data.save()
                 form.save()
             else:
                 x = form.errors

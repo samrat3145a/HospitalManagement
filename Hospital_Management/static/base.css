@@ -21,7 +21,7 @@ html {
     color: white;
 }
 
-.ui.menu {
+.navbar .ui.menu {
     display: flex;
     min-height: 2.85714286em;
     box-shadow: none;
@@ -29,7 +29,7 @@ html {
     background-color: black !important;
 }
 
-.ui.dropdown>.text {
+.navbar .ui.dropdown>.text {
     display: inline-block;
     -webkit-transition: none;
     transition: none;
@@ -41,14 +41,14 @@ html {
     color: black !important;
 }
 
-.ui.menu .item>i.dropdown.icon {
+.navbar .ui.menu .item>i.dropdown.icon {
     padding: 0em;
     float: right;
     margin: 0em 0em 0em 1em;
     color: white;
 }
 
-.ui.menu .item {
+.navbar .ui.menu .item {
     line-height: 0;
 }
 
