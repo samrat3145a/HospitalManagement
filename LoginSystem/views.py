@@ -175,14 +175,12 @@ def User_Register(request):
         blood_group = request.POST.get("blood_group")
         phoneNo = request.POST.get("phoneNo")
         id_proof_no = request.POST.get("id_proof_no")
-        id_proof_name = request.POST.get("id_proof_name")
-
-        New_Data = UserData(name=name,age = age,email = email ,gender = gender,address = address,
+        id_proof_name = request.POST.get("id_proof_name")     
+        if form.is_valid():
+            New_Data = UserData(name=name,age = age,email = email ,gender = gender,address = address,
                             blood_group = blood_group,phoneNo = phoneNo,id_proof_no = id_proof_no,
                             id_proof_name = id_proof_name)
-        New_Data.save()
-
-        if form.is_valid():
+            New_Data.save()
             form.save()
             messages.success(request, 'Account created successfully')
             return redirect('home')

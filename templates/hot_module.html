@@ -1,7 +1,20 @@
 {% extends 'base.html' %}
 {% block content%}
 
-<link rel="stylesheet" href="{% static 'hot_module.css' %}" />
+<style>
+    ul {
+        list-style-type: none;
+    }
+    li{
+        margin: 5px;
+    }
+    .list-group li a{
+        width:200px;
+    }
+    .list-group .btn {
+        font-weight: 500;
+    }
+</style>
 
 <div style="width: 80%; height: auto;text-align: center;">
     <h2 class="my-3">Search By Category</h2>
