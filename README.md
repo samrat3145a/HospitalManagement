@@ -1,5 +1,5 @@
 
-# Implementing Image Store and Retrieval in MongoDb using Django
+# Implementing Image Store and Retrieval in MongoDB using Django
 
 
 ## Features
