@@ -1,9 +1,5 @@
 
-# Implementing Image Store and Retrieving into MongoDb using Django
-
-
-
-
+# Implementing Image Store and Retrieval in MongoDb using Django
 
 
 ## Features
@@ -40,12 +36,14 @@ This can be declared globally so that every function can use fs variable
 - Always use request.FILES.get to retrieve image from the POST data
 - profile_pic is a object <MultiValueDict: {'profile_pic': [<InMemoryUploadedFile: testocr.jpeg (image/jpeg)>]}>
 - We cannot directly store a object in MongoDB
-- So we need to convert this object to Base64 encoding.We will use the following code to convert the object into base64 String :
 - test_var contains the image_id of image where it is stored
+- So we need to convert this object to Base64 encoding.We will use the following code to convert the object into base64 String :
 
 ```bash 
     x = base64.b64encode(profile_pic.read())
 ```
+
+
 ## Retrieve Image/File from MongoDB
 
 ```bash 
