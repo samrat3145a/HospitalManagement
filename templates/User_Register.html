@@ -10,7 +10,7 @@
 <div class="container">
   <div class="col-6">
     <h1><Strong>User Registeration</Strong></h1><br>
-    <form action="{% url 'User_Register' %}" class="row g-3" method="POST">
+    <form action="{% url 'User_Register' %}" class="row g-3" method="POST" enctype="multipart/form-data">
       {% csrf_token %}
 
       {% if form.errors %}
@@ -36,6 +36,10 @@
       <div class="col-md-6">
         <label for="name">Name</label>
         <input type="text" name="name" class="form-control" placeholder="Name" required id="name">
+      </div>
+      <div class="col-md-6">
+        <label for="profile_pic">Profile Pic</label>
+        <input type="file" name="profile_pic" enctype="multipart/form-data" class="form-control" required id="profile_pic">
       </div>
 
       <div class="col-md-6">

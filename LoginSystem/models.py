@@ -19,6 +19,7 @@ class HospitalData(models.Model):
         
 class UserData(models.Model): 
     name = models.CharField(max_length=40)
+    profile_pic = models.CharField(max_length=100)
     age = models.IntegerField()
     email = models.CharField(max_length=40,unique = True)
     gender = models.CharField(max_length=40)

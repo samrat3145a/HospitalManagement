@@ -4,14 +4,16 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import connection
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils.html import strip_tags
-import json
+import json,base64,gridfs
 from datetime import date,timedelta
+from django.http import HttpResponse
 import requests
 from django.http.response import HttpResponseRedirect, JsonResponse
 from LoginSystem.forms import SignupForm,AddTest,BookSlotForm
 from LoginSystem.models import HospitalData,UserData,Test,BookSlot
 from django.core import serializers
-
+from pymongo import MongoClient
+from bson.objectid import ObjectId
 API_KEY = 'cfff528b915d4bbc8ef789472fe7041d'
 
 def index(request):
@@ -22,9 +24,28 @@ def index(request):
 def homepage(request):
     return render(request, 'index.html')
 
+def fetch_image(image_id):
+    # print(type(image_id))
+    # print(type(ObjectId(image_id)))
+    ##########################################
+    connection = MongoClient("localhost", 27017)
+    database = connection['test_database']
+    fs = gridfs.GridFS(database)
+    outputdata = fs.get(ObjectId(image_id)).read()
+    # print(outputdata)
+    result = outputdata.decode('utf-8')
+    # print(x)
+    # print(type(en_img))
+    # outputdata = base64.b64decode(fs.find(image_id).read())
+    # print(base64.b64decode(outputdata))
+    return(result)
 
 def home(request):
-    return render(request,'index.html')
+    hospital_list = UserData.objects.all()
+    x = []
+    for i in hospital_list:
+        x.append(fetch_image(i.profile_pic))
+    return render(request,'index.html',{'hospital_list':hospital_list,"image_list":x})
 
 
 def logout(request):
@@ -152,11 +173,13 @@ def Lab_Register(request):
                 form.save()
             else:
                 x = form.errors
+                # print(x)
                 context={"success":"false","messages":x}
                 return JsonResponse(context)
         except Exception as e:
-            # print(str(e))
+            print(str(e))
             context={"success":"false","messages":str(e)}
+            print(context)
             return JsonResponse(context)
         context={"success":"true","messages":"Hospital Registration done successfully !!"}
         return JsonResponse(context)
@@ -175,11 +198,23 @@ def User_Register(request):
         blood_group = request.POST.get("blood_group")
         phoneNo = request.POST.get("phoneNo")
         id_proof_no = request.POST.get("id_proof_no")
-        id_proof_name = request.POST.get("id_proof_name")     
+        id_proof_name = request.POST.get("id_proof_name")
+        profile_pic = request.FILES.get("profile_pic")
+        print(request.FILES)
+        print(str(profile_pic))
+        print(type(profile_pic))
+        x = base64.b64encode(profile_pic.read())
+
+        ################################################
+        connection = MongoClient("localhost", 27017)
+        database = connection['test_database']
+        fs = gridfs.GridFS(database)
+        test_var = fs.put(x, filename=str(profile_pic))
+        
         if form.is_valid():
             New_Data = UserData(name=name,age = age,email = email ,gender = gender,address = address,
                             blood_group = blood_group,phoneNo = phoneNo,id_proof_no = id_proof_no,
-                            id_proof_name = id_proof_name)
+                            id_proof_name = id_proof_name,profile_pic = test_var)
             New_Data.save()
             form.save()
             messages.success(request, 'Account created successfully')
@@ -189,4 +224,3 @@ def User_Register(request):
             return redirect('User_Register')
     form = SignupForm()
     return render(request, 'User_Register.html', {'form': form})
-

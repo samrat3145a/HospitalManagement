@@ -3,6 +3,11 @@
 
 {% load static %}
 
+{% for i in image_list %}
+	<img src="data:image/png;base64,{{i}}" alt="">
+{% endfor %}
+
+
 <div class="Sections" style="padding-top: 6%;">
 	<div class="row row-cols-1 row-cols-md-3 g-4">
 		{% if not user.is_staff %}
