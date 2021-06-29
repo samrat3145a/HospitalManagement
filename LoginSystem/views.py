@@ -1,30 +1,52 @@
 from django.contrib import auth, messages
 from django.contrib.auth import authenticate
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.db import connection
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from django.utils.html import strip_tags
-import json
+import json,base64,requests,io 
+from PIL import Image
 from datetime import date,timedelta
-import requests
-from django.http.response import HttpResponseRedirect, JsonResponse
-from LoginSystem.forms import SignupForm,AddTest,BookSlotForm
-from LoginSystem.models import HospitalData,UserData,Test,BookSlot
-from django.core import serializers
+from django.http.response import JsonResponse
+from LoginSystem.forms import *
+from LoginSystem.models import *
+from django.conf import settings
+from django.core.mail import EmailMessage
+from django.template.loader import render_to_string
 
 API_KEY = 'cfff528b915d4bbc8ef789472fe7041d'
 
+
 def index(request):
-    return render(request, 'index.html')
-
-
-@login_required(login_url='Lab_Login')
-def homepage(request):
+    messages.add_message(request, messages.INFO, 'Welcome to The Hospital Portal !')
     return render(request, 'index.html')
 
 
 def home(request):
     return render(request,'index.html')
+    
+def mailer(request):
+    if request.method == 'POST':
+        val = request.POST.get('value')
+        data = base64.b64decode(val.encode('UTF-8'))
+        buf = io.BytesIO(data)
+        img = Image.open(buf)
+        arr = []
+        
+        get_user_data = UserData.objects.get(username = request.user.username)
+        user_email = str(get_user_data.email)
+        print(user_email)
+        arr.append(user_email)
+        img.save(r'Hospital_Management/static/img/test.png',resolution=200)
+        mail_content = render_to_string('mailer.html', {'context': 'values'})
+        plain_message = strip_tags(mail_content)
+        plain_message = plain_message.replace("User",request.user.username)
+        print(plain_message)
+        email = EmailMessage(str("Welcome to Medcheck")+' || '+str("Thanks for Slot Booking"),plain_message,settings.EMAIL_HOST_USER,arr)
+        email.attach_file('Hospital_Management/static/img/test.png')
+        email.send()
+        return JsonResponse({"message":"Successfull !!"})
+    return render(request,'mailer.html')
 
 
 def logout(request):
@@ -34,9 +56,13 @@ def logout(request):
 
 @login_required(login_url='Lab_Login')        
 def book_slot(request):
+    today = date.today()
+    current_user = request.user.username
+    # print(current_user)
+    get_user_data = UserData.objects.get(username = current_user)
     hospital_list = HospitalData.objects.all()
     test_list = Test.objects.all()
-    context = {'hospital_list': hospital_list,"test_list":test_list}
+    context = {'hospital_list': hospital_list,"test_list":test_list,"get_user_data":get_user_data,"date":today}
     if(request.method == 'GET'):
         data = request.GET.get('value')
         if(data):
@@ -167,6 +193,7 @@ def Lab_Register(request):
 def User_Register(request):
     if request.method == 'POST':
         form = SignupForm(request.POST)
+        username = request.POST.get("username")
         name = request.POST.get("name")
         age = request.POST.get("age")
         email = request.POST.get("email")
@@ -177,10 +204,9 @@ def User_Register(request):
         id_proof_no = request.POST.get("id_proof_no")
         id_proof_name = request.POST.get("id_proof_name")     
         if form.is_valid():
-            New_Data = UserData(name=name,age = age,email = email ,gender = gender,address = address,
+            New_Data = UserData.objects.create(username = username,name=name,age = age,email = email ,gender = gender,address = address,
                             blood_group = blood_group,phoneNo = phoneNo,id_proof_no = id_proof_no,
                             id_proof_name = id_proof_name)
-            New_Data.save()
             form.save()
             messages.success(request, 'Account created successfully')
             return redirect('home')

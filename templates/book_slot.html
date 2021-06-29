@@ -3,13 +3,32 @@
 
 {% load static %}
 
+<style>
+    .modal-open .modal {
+        z-index: 10000 !important;
+        font-family: "Lato";
+        font-size: 18px;
+    }
+
+    .modal .modal-val {
+        font-family: "Roboto";
+        font-size: 17px;
+        margin: 10px;
+        letter-spacing: 1.2px;
+    }
+</style>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,400i,700">
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
+<div id="editor"></div>
 <div class="container">
     <div class="col-6">
         <h1><Strong>Book Slot</Strong></h1><br>
-        <form action="{% url 'book_slot' %}" class="row g-3" method="POST">
+        <form id="book-slot-form" action="{% url 'book_slot' %}" class="row g-3" method="POST">
             {% csrf_token %}
 
             {% if form.errors %}
@@ -19,9 +38,9 @@
                 </button>
                 <div>Your form has Error!</div>
                 {% for field in form %}
-                    {% if field.errors %}
-                        {{ field.errors }}
-                    {% endif %}
+                {% if field.errors %}
+                {{ field.errors }}
+                {% endif %}
                 {% endfor %}
             </div>
 
@@ -46,36 +65,139 @@
             <div class="col-md-6">
                 <label for="slot_time">Slot Time</label>
                 <input type="time" name="slot_time" class="form-control" required id="slot_time">
-            </div> 
-            
+            </div>
+
             <div class="col-md-6">
                 <input type="number" name="test_price" hidden class="form-control" required id="test_price">
                 <input type="text" name="test_name" hidden class="form-control" required id="test_name">
-                <input type="text" name="user_id" hidden class="form-control" required id="user_id" value="{{ user.id }}">
+                <input type="text" name="user_id" hidden class="form-control" required id="user_id"
+                    value="{{ user.id }}">
             </div>
-            
+
             <div class="form-group col-md-12 my-2 mb-4">
                 <p> <label for="test_name_select">Test Name</label>
-                    <select class="form-control js-example-basic-multiple col-12 mt-2" name="test_name_select" multiple="multiple"
-                        id="test_name_select">
+                    <select class="form-control js-example-basic-multiple col-12 mt-2" name="test_name_select"
+                        multiple="multiple" id="test_name_select">
                     </select>
                 </p>
             </div>
 
+
             <p class="form-row">
-            <div class="form-group col-md-3">
-                <button class="ui vertical primary animated button" style="width: max-content;">
-                    <div id="total-price" class="hidden content">Rs 0.00</div>
-                    <div class="visible content">Book Slot</div>
-                </button>
+            <div class="form-group col-md-3 book-slot-btn">
+                <a class="ui vertical primary animated button" style="width: max-content;">
+                    <div id="total-price" class="book-slot-btn hidden content">Rs 0.00</div>
+                    <div class="book-slot-btn visible content">Book Slot</div>
+                </a>
             </div>
             <div class="form-group col-md-3">
                 <button type="reset" class="ui red button">Reset</button>
             </div>
             </p>
         </form>
+
+        <!-- Modal -->
+        <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background: aliceblue;">
+                        <img src="{% static 'img/logo.png'%}" / height="60px">
+                        <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div id="hospital_name" class="col-md-4 h2 m-auto"></div>
+                        <div class="row my-2 p-2" style="background: aliceblue;border: 1px solid rgb(223, 223, 223);">
+                            <div class="col-md-4">
+                                <p class="h4">Billing Details</p>
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-md-6 ml-3">
+                                <p>Name : <span class="modal-val">{{ get_user_data.name }}</span></p>
+                                <p>Email : <span class="modal-val">{{ get_user_data.email }}</span> </p>
+                                <p>Contact :<span class="modal-val">{{ get_user_data.phoneNo }}</span> </p>
+                                <p>Address :<span class="modal-val">{{ get_user_data.address }}</span> </p>
+                            </div>
+                            <div class="col-md-4 ml-auto">
+                                <p>Age :<span class="modal-val">{{ get_user_data.age }}</span> </p>
+                                <p>Gender :<span class="modal-val">{{ get_user_data.gender }}</span> </p>
+                                <p>Blood Group : <span class="modal-val">{{ get_user_data.blood_group }}</span></p>
+                                <p>Date : {{ date }}</p>
+                            </div>
+                        </div>
+                        <div class="row my-2 p-3" style="background: aliceblue;border: 1px solid rgb(223, 223, 223);">
+                            <div class="col-md-4">
+                                <p class="h4">Slot Details </p>
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-md-4">
+                                <div class="ml-3">
+                                    <p>Date :<span id="slot-date-modal" class="modal-val"></span> </p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 ml-auto">
+                                <div>
+                                    <p>Time :<span id="slot-time-modal" class="modal-val"></span> </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row my-2 p-2" style="background: aliceblue;border: 1px solid rgb(223, 223, 223);">
+                            <div class="col-md-4">
+                                <p class="h4">Test Name</p>
+                            </div>
+                            <div class="col-md-4 ml-auto">
+                                <p class="h4">Test Name</p>
+                            </div>
+                        </div>
+                        <div class="row my-2">
+                            <div class="col-md-4">
+                                <div class="ml-3" id="get-all-test">
+                                </div>
+                            </div>
+                            <div class="col-md-4 ml-auto">
+                                <div id="get-all-price">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row my-2 p-3" style="background: aliceblue;border: 1px solid rgb(223, 223, 223);">
+                            <div class="col-md-4">
+                                <p>Total Price : </p>
+                            </div>
+                            <div class="col-md-4 ml-auto">
+                                <p id="total-price-modal"></p>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer" id="modal-footer-id">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                        <button id="confirm-btn" type="button" class="btn btn-primary">Confirm & Download Pdf</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+<script>
+    $(".book-slot-btn").on("click", function () {
+        $('#myModal').modal("show");
+        $("#hospital_name").text($("#hospital_id option:selected").text());
+        $("#slot-date-modal").text($("#slot_date").val());
+        $("#slot-time-modal").text(tConvert($("#slot_time").val()));
+    });
+</script>
+
+<script>
+    $("#confirm-btn").on("click", function () {
+        print_bill();
+    });
+</script>
 
 <script>
     $("#hospital_id").on("change", function () {
@@ -97,7 +219,7 @@
                 }
 
             }
-        })
+        });
     });
 </script>
 
@@ -115,23 +237,71 @@
     $('#test_name_select').on('change', function (evt) {
         if ($('#test_name_select').select2('val') != null) {
             var selected_data = $('#test_name_select').select2('data');
+            $("#get-all-test").text("");
+            $("#get-all-price").text("");
             var sum = 0;
+            var gst = 18;
             var str = "";
-            for(var i in selected_data)
-            {
+            for (var i in selected_data) {
                 // console.log(i);
-                str += selected_data[i].text.substr(0,selected_data[i].text.indexOf("-")-2);
-                if(i<selected_data.length-1)
-                {
+                $("<p />", { text: selected_data[i].text.substr(0, selected_data[i].text.indexOf("-") - 2) }).appendTo($("#get-all-test"));
+                $("<p />", { text: selected_data[i].id }).appendTo($("#get-all-price"));
+                str += selected_data[i].text.substr(0, selected_data[i].text.indexOf("-") - 2);
+                if (i < selected_data.length - 1) {
                     str += ",";
                 }
                 sum += parseInt(selected_data[i].id);
             }
+            $("<p />", { text: " GST (18%)" }).appendTo($("#get-all-test"));
+            $("<p />", { text: (sum * 18) / 100 }).appendTo($("#get-all-price"));
+            sum += (sum * 18) / 100;
             $("#test_name").val(str);
-            $("#total-price").text("Rs "+ sum + ".00");
+            $("#total-price").text("Rs " + sum + ".00");
             $("#test_price").val(sum);
+            $("#total-price-modal").text("Rs " + sum + ".00");
         }
     });
 
+</script>
+<script>
+    function tConvert(time) {
+        time = time.toString().match(/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+        if (time.length > 1) { // If time format correct
+            time = time.slice(1);  // Remove full string match value
+            time[5] = +time[0] < 12 ? 'AM' : 'PM'; // Set AM/PM
+            time[0] = +time[0] % 12 || 12; // Adjust hours
+        }
+        return time.join(''); // return adjusted time or original string
+    }
+</script>
+<script type="text/javascript">
+    var image_content = "";
+    function print_bill() {
+        $("#modal-footer-id").hide();
+        html2canvas($("#myModal"), { scale: 2, scrollY: -window.scrollY }).then(canvas => {
+            var imgData = canvas.toDataURL('image/png');
+            // console.log(imgData);
+            var x = canvas.height - 40;
+            var y = canvas.width;
+            var pdf = new jsPDF('L', 'pt', [y, x]);
+            pdf.addImage(imgData, 'PNG', 0, 0, y, x);
+            pdf.save("Billing_Invoice.pdf");
+            var result = imgData.substr(imgData.indexOf(',') + 1);
+            $.ajax({
+                type: "POST",
+                url: "/mailer/",
+                data: {
+                    value: result
+                },
+                dataType: "json",
+                success: function (data) {
+                    $("#book-slot-form").submit();
+                }
+            });
+        });
+        $("#modal-footer-id").show();
+
+    }
 </script>
 {% endblock %}

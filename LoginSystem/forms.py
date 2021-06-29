@@ -46,3 +46,4 @@ class SignupForm(UserCreationForm):
 
         self.fields['is_staff'].widget.attrs['style'] = 'display:none;'
         self.fields['is_staff'].label = ''
+        self.fields['is_staff'].help_text = ''

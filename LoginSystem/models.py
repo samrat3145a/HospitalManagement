@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class HospitalData(models.Model):
     Hospital_ID = models.AutoField(primary_key=True) 
@@ -18,6 +19,7 @@ class HospitalData(models.Model):
         db_table = "Hospital Data"
         
 class UserData(models.Model): 
+    username = models.CharField(max_length=50)
     name = models.CharField(max_length=40)
     age = models.IntegerField()
     email = models.CharField(max_length=40,unique = True)
