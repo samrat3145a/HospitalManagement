@@ -5,9 +5,10 @@
     font-family: 'Baloo Bhai 2', cursive;
     font-size: 1.2rem;
   }
+  
 </style>
 <title>User Register</title>
-<div class="container">
+<div class="container" >
   <div class="col-6">
     <h1><Strong>User Registeration</Strong></h1><br>
     <form action="{% url 'User_Register' %}" class="row g-3" method="POST">
@@ -34,32 +35,32 @@
 
       </p>
       <div class="col-md-6">
-        <label for="name">Name</label>
+        <label for="name" class="form-label">Name</label>
         <input type="text" name="name" class="form-control" placeholder="Name" required id="name">
       </div>
 
       <div class="col-md-6">
-        <label for="email">Email</label>
+        <label for="email" class="form-label">Email</label>
         <input type="text" name="email" class="form-control" placeholder="Email Address" required id="email">
       </div>
       <div class="col-md-6">
-        <label for="contact">Phone No</label>
+        <label for="contact" class="form-label">Phone No</label>
         <input type="number" name="phoneNo" class="form-control" placeholder="Contact No" required id="contact"
-          maxlength="10">
+          maxlength="10" >
       </div>
 
       <div class="col-md-6">
-        <label for="age">Age</label>
-        <input type="number" name="age" class="form-control" placeholder="Age" required id="age">
+        <label for="age" class="form-label">Age</label>
+        <input type="number" name="age" class="form-control" placeholder="Age" required id="age"  >
       </div>
 
       <div class="col-md-6">
-        <label for="blood_group">Blood Group</label>
+        <label for="blood_group" class="form-label">Blood Group</label>
         <input type="text" name="blood_group" class="form-control" placeholder="Blood Group" required id="blood_group">
       </div>
 
       <div class="col-md-6">
-        <label for="gender">Gender</label>
+        <label for="gender" class="form-label">Gender</label>
         <select class="form-control" name="gender" id="gender">
           <option value="">Select Gender</option>
           <option value="Male">Male</option>
@@ -69,7 +70,7 @@
       </div>
 
       <div class="col-md-6">
-        <label for="id_proof_name">ID Proof Name</label>
+        <label for="id_proof_name" class="form-label">ID Proof Name</label>
         <select class="form-control" name="id_proof_name" id="id_proof_name">
           <option value="">Select ID Proof Type</option>
           <option value="Aadhar Card">Aadhar Card</option>
@@ -78,13 +79,13 @@
         </select>
       </div>
       <div class="col-md-6">
-        <label for="Id_proof_no">Identity No</label>
+        <label for="Id_proof_no" class="form-label">Identity No</label>
         <input type="number" name="id_proof_no" class="form-control" placeholder="ID Proof No" required
-          id="Id_proof_no">
+          id="Id_proof_no"  >
       </div>
 
       <div class="col-md-12 mb-4">
-        <label for="Address">Address</label>
+        <label for="Address" class="form-label">Address</label>
         <input type="text" name="Address" class="form-control" placeholder="Address" required id="Address">
       </div>
 
