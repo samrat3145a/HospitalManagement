@@ -253,8 +253,8 @@
                 sum += parseInt(selected_data[i].id);
             }
             $("<p />", { text: " GST (18%)" }).appendTo($("#get-all-test"));
-            $("<p />", { text: (sum * 18) / 100 }).appendTo($("#get-all-price"));
-            sum += (sum * 18) / 100;
+            $("<p />", { text: Math.floor((sum * 18) / 100) }).appendTo($("#get-all-price"));
+            sum += Math.floor((sum * 18) / 100);
             $("#test_name").val(str);
             $("#total-price").text("Rs " + sum + ".00");
             $("#test_price").val(sum);
