@@ -12,7 +12,6 @@ class HospitalData(models.Model):
     state = models.CharField(max_length=20)
     open_time = models.TimeField()
     close_time = models.TimeField()
-    test = models.CharField(max_length=20)
     pincode = models.BigIntegerField()
 
     class Meta:
@@ -22,11 +21,11 @@ class UserData(models.Model):
     username = models.CharField(max_length=50)
     name = models.CharField(max_length=40)
     age = models.IntegerField()
-    email = models.CharField(max_length=40,unique = True)
+    email = models.EmailField(max_length=40,unique = True)
     gender = models.CharField(max_length=40)
     address = models.CharField(max_length=80)
     blood_group = models.CharField(max_length=20)
-    phoneNo = models.BigIntegerField(unique = True) 
+    phoneNo = models.PositiveBigIntegerField(unique = True) 
     id_proof_name = models.CharField(max_length=20)
     id_proof_no = models.CharField(max_length=20)
 

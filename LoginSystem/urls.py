@@ -14,6 +14,10 @@ urlpatterns = [
     path('Lab/Register/', views.Lab_Register, name="Lab_Register"),
     path('User/Register/', views.User_Register, name="User_Register"),
     path('Lab/Login/', views.Lab_Login, name="Lab_Login"),
+    path('test/', views.test, name="test"),
+    path('view_test/', views.view_test, name="view_test"),
+    path('update_test/<int:pk>', views.update_test, name="update_test"),
+    path('delete_test/<int:pk>', views.delete_test, name="delete_test"),
 
 
 ]

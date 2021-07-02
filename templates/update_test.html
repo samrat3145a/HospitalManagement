@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block content%}
+
+<div class="container">
+    <form action="" method="POST" class="col-md-4">
+        <div class="my-4 mx-auto d-block" style="width: max-content;">
+            <p class="display-4">Update Test</p>
+        </div>
+        {% if get_form %}
+            {% csrf_token %}
+            {{get_form.as_p}}
+            <input class="btn btn-success" type="submit" value="Update">
+        {% endif %}
+    </form>
+</div>
+
+
+{% endblock %}

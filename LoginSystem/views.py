@@ -7,7 +7,8 @@ from django.utils.html import strip_tags
 import json,base64,requests,io 
 from PIL import Image
 from datetime import date,timedelta
-from django.http.response import JsonResponse
+from django.http.response import HttpResponse, HttpResponseRedirect, JsonResponse
+from requests.api import get
 from LoginSystem.forms import *
 from LoginSystem.models import *
 from django.conf import settings
@@ -18,7 +19,7 @@ API_KEY = 'cfff528b915d4bbc8ef789472fe7041d'
 
 
 def index(request):
-    messages.add_message(request, messages.INFO, 'Welcome to The Hospital Portal !')
+    messages.add_message(request, messages.SUCCESS, 'Welcome to The Hospital Portal !')
     return render(request, 'index.html')
 
 
@@ -48,6 +49,8 @@ def mailer(request):
         return JsonResponse({"message":"Successfull !!"})
     return render(request,'mailer.html')
 
+def test(request):
+    return render(request,'try_test.html')
 
 def logout(request):
     if request.method == 'POST':
@@ -76,10 +79,10 @@ def book_slot(request):
         form = BookSlotForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'New Slot Added!') 
+            messages.add_message(request, messages.INFO, 'New Slot Added!')
             return redirect('home')
         else:
-            messages.error(request, form.errors)
+            messages.add_message(request, messages.ERROR, form.errors)
             return render(request, 'book_slot.html',context)
     return render(request,'book_slot.html',context )
     
@@ -111,6 +114,33 @@ def hot_module(request):
     return render(request,'hot_module.html',context)
     
 
+def view_test(request):
+    get_all_test = Test.objects.all()
+    context = {"test_data":get_all_test}
+    return render(request,'view_test.html',context)
+    
+def update_test(request,pk):
+    if(request.method ==  "POST"):
+        fetch_data = Test.objects.get(id=pk)
+        print("POST")
+        get_form = AddTest(request.POST,instance=fetch_data)
+        if(get_form.is_valid()):
+            get_form.save()
+        return HttpResponseRedirect("/view_test")
+    else:
+        fetch_data = Test.objects.get(id=pk)
+        get_form = AddTest(instance=fetch_data)
+        context = {"get_form":get_form}
+        return render(request,'update_test.html',context)
+        
+    
+def delete_test(request,pk):
+    if(request.method ==  "POST"):
+        fetch_data = Test.objects.get(id=pk)
+        fetch_data.delete()
+        return HttpResponseRedirect("/view_test")
+    return HttpResponseRedirect("/view_test")
+
 def add_test(request):
     current_user = request.user.username
     # print(current_user)
@@ -119,16 +149,16 @@ def add_test(request):
     context = {'hospital_list': hospital_list}
     if request.method == 'POST':
         if Test.objects.filter(test_name=request.POST['test_name'],hospital_id=request.POST['hospital_id']) :
-            messages.error(request,"The Test "+request.POST['test_name'] + ' already exits in '+ HospitalData.objects.get(Hospital_ID=request.POST['hospital_id']).Hospital_Name)
+            messages.add_message(request, messages.ERROR,"The Test "+request.POST['test_name'] + ' already exits in '+ HospitalData.objects.get(Hospital_ID=request.POST['hospital_id']).Hospital_Name)
             return render(request, 'test_data.html',context)
 
         form = AddTest(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'New Test Added!') 
+            messages.add_message(request, messages.INFO, 'New Test Added!')
             return redirect('home')
         else:
-            messages.error(request, form.errors)
+            messages.add_message(request, messages.ERROR, form.errors)
             return render(request, 'test_data.html',context)
     return render(request,'test_data.html',context)
 
@@ -140,10 +170,10 @@ def Lab_Login(request):
         user = authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
-            messages.success(request, 'You have successfully login!')
+            messages.add_message(request, messages.INFO, 'You have successfully login!')
             return redirect('home')
         else:
-            messages.success(request, ' Error Logging In / Please try again !')
+            messages.add_message(request, messages.ERROR, 'Error Logging In / Please try again !')
             return redirect('Lab_Login')
     return render(request, 'Lab_Login.html')
 
@@ -204,14 +234,14 @@ def User_Register(request):
         id_proof_no = request.POST.get("id_proof_no")
         id_proof_name = request.POST.get("id_proof_name")     
         if form.is_valid():
-            New_Data = UserData.objects.create(username = username,name=name,age = age,email = email ,gender = gender,address = address,
+            UserData.objects.create(username = username,name=name,age = age,email = email ,gender = gender,address = address,
                             blood_group = blood_group,phoneNo = phoneNo,id_proof_no = id_proof_no,
                             id_proof_name = id_proof_name)
             form.save()
-            messages.success(request, 'Account created successfully')
+            messages.add_message(request, messages.INFO, 'Account created successfully')
             return redirect('home')
         else:
-            messages.success(request, 'Please Enter Valid Details !')
+            messages.add_message(request, messages.ERROR, 'Please Enter Valid Details !')
             return redirect('User_Register')
     form = SignupForm()
     return render(request, 'User_Register.html', {'form': form})

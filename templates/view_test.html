@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block content%}
+
+<div class="container">
+    <div class="m-auto d-block p-5" style="width: max-content;">
+        <p class="display-4">Test Table</p>
+    </div>
+    <table class="table table-dark table-bordered">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Test Name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for test in test_data %}
+                {% if user.username == test.hospital_id.email %}
+                    <tr>
+                        <th scope="row">{{test.id}}</th>
+                        <td>{{ test.test_name }}</td>
+                        <td>{{ test.test_price }}</td>
+                        <td>
+                            <a href="{% url 'update_test' test.id  %}" class="btn btn-warning btn-sm">Update</a>
+                            
+                            <form action="{% url 'delete_test' test.id  %}" method="POST" class="d-inline">
+                                <input type="submit" class="btn btn-danger btn-sm" value="Delete">
+                            </form>
+                        </td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}

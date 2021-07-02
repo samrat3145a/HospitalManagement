@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django import forms
+from django.forms import widgets
 
 from LoginSystem.models import Test,BookSlot
 
@@ -8,7 +9,10 @@ from LoginSystem.models import Test,BookSlot
 class AddTest(forms.ModelForm):
     class Meta:
         model = Test
-        fields = '__all__'
+        fields = ['hospital_id','test_name','test_price']
+        labels = {'hospital_id':'Hospital ID','test_name':'Test Name','test_price':'Price'}
+        placeholders = {'hospital_id':'Hospital ID','test_name':'Test Name','test_price':'Price'}
+        widgets = {'hospital_id':forms.TextInput(attrs={'class':'form-control'}),'test_name':forms.TextInput(attrs={'class':'form-control'}),'test_price':forms.NumberInput(attrs={'class':'form-control'})}
         
 class BookSlotForm(forms.ModelForm):
     class Meta:

@@ -1,0 +1,83 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'base.css' %}" />
+
+<div class="modal-content">
+    <div class="modal-header" style="background: aliceblue;">
+        <img src="{% static 'img/logo.png'%}" / height="60px">
+        <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <div id="hospital_name" class="col-md-4 h2 m-auto"></div>
+        <div class="row my-2 p-2" style="background: aliceblue;border: 1px solid rgb(223, 223, 223);">
+            <div class="col-md-4">
+                <p class="h4">Billing Details</p>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-md-6 ml-3">
+                <p>Name : <span class="modal-val">{{ get_user_data.name }}</span></p>
+                <p>Email : <span class="modal-val">{{ get_user_data.email }}</span> </p>
+                <p>Contact :<span class="modal-val">{{ get_user_data.phoneNo }}</span> </p>
+                <p>Address :<span class="modal-val">{{ get_user_data.address }}</span> </p>
+            </div>
+            <div class="col-md-4 ml-auto">
+                <p>Age :<span class="modal-val">{{ get_user_data.age }}</span> </p>
+                <p>Gender :<span class="modal-val">{{ get_user_data.gender }}</span> </p>
+                <p>Blood Group : <span class="modal-val">{{ get_user_data.blood_group }}</span></p>
+                <p>Date : {{ date }}</p>
+            </div>
+        </div>
+        <div class="row my-2 p-3" style="background: aliceblue;border: 1px solid rgb(223, 223, 223);">
+            <div class="col-md-4">
+                <p class="h4">Slot Details </p>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-md-4">
+                <div class="ml-3">
+                    <p>Date :<span id="slot-date-modal" class="modal-val"></span> </p>
+                </div>
+            </div>
+            <div class="col-md-4 ml-auto">
+                <div>
+                    <p>Time :<span id="slot-time-modal" class="modal-val"></span> </p>
+                </div>
+            </div>
+        </div>
+        <div class="row my-2 p-2" style="background: aliceblue;border: 1px solid rgb(223, 223, 223);">
+            <div class="col-md-4">
+                <p class="h4">Test Name</p>
+            </div>
+            <div class="col-md-4 ml-auto">
+                <p class="h4">Test Name</p>
+            </div>
+        </div>
+        <div class="row my-2">
+            <div class="col-md-4">
+                <div class="ml-3" id="get-all-test">
+                </div>
+            </div>
+            <div class="col-md-4 ml-auto">
+                <div id="get-all-price">
+                </div>
+            </div>
+        </div>
+        <div class="row my-2 p-3" style="background: aliceblue;border: 1px solid rgb(223, 223, 223);">
+            <div class="col-md-4">
+                <p>Total Price : </p>
+            </div>
+            <div class="col-md-4 ml-auto">
+                <p id="total-price-modal"></p>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer" id="modal-footer-id">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+        <button id="confirm-btn" type="button" class="btn btn-primary">Confirm & Download Pdf</button>
+    </div>
+</div>

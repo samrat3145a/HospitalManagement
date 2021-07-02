@@ -4,6 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:400,400i,700">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Baloo+Bhai+2&family=Bree+Serif&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -35,14 +37,14 @@
               <a class="nav-link" href="{% url 'hospital_search' %}">Searching</a>
             </li>
             {% if not user.is_staff %}
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'book_slot' %}">Book Slot</a>
-              </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'book_slot' %}">Book Slot</a>
+            </li>
             {% endif %}
             {% if user.is_staff %}
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'add_test' %}">Add Test</a>
-              </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'add_test' %}">Add Test</a>
+            </li>
             {% endif %}
           </ul>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
@@ -56,7 +58,7 @@
           </div>
           {% endif %}
           <div class="navbar-nav ml-auto">
-
+  
             <a class="nav-link" href="{% url 'home' %}">Home</a>
             {% if user.is_authenticated %}
             <a class="nav-link">{{ user.username }}</a>
@@ -98,14 +100,26 @@
       </button>
     </div>
     <div class="container" style="padding-top: 0px;">
-      {% if messages %} {% for message in messages %}
-      <div style="text-align: center" class="alert alert-warning alert-dismissible fade show" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        {{ message }}
-      </div>
-      {% endfor %} {% endif %}
+      {% if messages %}
+        {% for message in messages %}
+          {% if message.tags == "success" or message.tags == "info"  %}
+            <div style="text-align: center" class="alert alert-success alert-dismissible fade show" role="alert">
+              
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              {{ message }}
+            </div>
+          {% else %}  
+            <div style="text-align: center" class="alert alert-danger alert-dismissible fade show" role="alert">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+              {{ message }}
+            </div>
+          {% endif %}
+        {% endfor %}
+      {% endif %}
     </div>
 
 
