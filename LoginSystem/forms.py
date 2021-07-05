@@ -11,8 +11,8 @@ class AddTest(forms.ModelForm):
         model = Test
         fields = ['hospital_id','test_name','test_price']
         labels = {'hospital_id':'Hospital ID','test_name':'Test Name','test_price':'Price'}
-        placeholders = {'hospital_id':'Hospital ID','test_name':'Test Name','test_price':'Price'}
-        widgets = {'hospital_id':forms.TextInput(attrs={'class':'form-control'}),'test_name':forms.TextInput(attrs={'class':'form-control'}),'test_price':forms.NumberInput(attrs={'class':'form-control'})}
+        placeholders = {'hospital_id':'','test_name':'Test Name','test_price':'Price'}
+        widgets = {'hospital_id':forms.TextInput(attrs={'class':'form-control','placeholder':'Hospital ID'}),'test_name':forms.TextInput(attrs={'class':'form-control','placeholder':'Test Name'}),'test_price':forms.NumberInput(attrs={'class':'form-control','placeholder':'Price'})}
         
 class BookSlotForm(forms.ModelForm):
     class Meta:
